@@ -37,7 +37,7 @@ Make metadata api call like this:
 ```
 The metadata manager can also be retrieved like this after you get it plugged in:
 ```java
-	BoxFileMetadataManager manager = (BoxFileMetadataManager) client.getPluginManager(BoxFileMetadataPlugin.FILE_METADATA_MANAGER_KEY);
+	IBoxFileMetadataManager manager = (IBoxFileMetadataManager) client.getPluginManager(BoxFileMetadataPlugin.FILE_METADATA_MANAGER_KEY);
 ```
 
 For more detailed usage, please also refer to HelloMetadata.java under com.box.boxmetadatalibv2.example package.
