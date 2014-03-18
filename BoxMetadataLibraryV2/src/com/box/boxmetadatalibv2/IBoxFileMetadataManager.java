@@ -52,7 +52,7 @@ public interface IBoxFileMetadataManager extends IBoxResourceManager {
         AuthFatalFailureException, BoxServerException;
 
     /**
-     * Replace the value of an existing key.
+     * Replace the value of an existing key. If key doens't exist, BoxServerException will be thrown.
      * 
      * @param fileId
      *            id of the file
