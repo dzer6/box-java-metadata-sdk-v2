@@ -12,7 +12,7 @@ public class MetadataOperation extends MapJSONStringEntity {
     private static final long serialVersionUID = 1L;
 
     public static enum Operation {
-        ADD, REMOVE, TEST;
+        ADD, REMOVE, TEST, REPLACE;
 
         @Override
         public String toString() {
