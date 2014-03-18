@@ -28,12 +28,12 @@ Plugin metadata manager like this:
 
 ```java
 	BoxFileMetadataPlugin plugin = new BoxFileMetadataPlugin();
-        BoxFileMetadataManager manager = plugin.plugin(client);
+        IBoxFileMetadataManager manager = plugin.plugin(client);
 ```
 
 Make metadata api call like this:
 ```java
-	manager.updateMetadata(fileId, key1, value1);
+	manager.updateMetadata(fileId, metadataType, key1, value1);
 ```
 The metadata manager can also be retrieved like this after you get it plugged in:
 ```java
