@@ -92,7 +92,7 @@ public class BoxFileMetadataManagerImpl extends AbstractBoxResourceManager imple
         AuthFatalFailureException, BoxServerException {
         MetadataJSONPatchRequestObject obj = MetadataJSONPatchRequestObject.batchOperation();
         for (Map.Entry<String, String> entry : keyValues.entrySet()) {
-            obj.put(entry.getKey(), entry.getValue());
+            obj.appendAddOperation(entry.getKey(), entry.getValue());
         }
         return executeBatchMetadataRequest(fileId, metadataType, obj);
     }
