@@ -52,6 +52,21 @@ public interface IBoxFileMetadataManager extends IBoxResourceManager {
         AuthFatalFailureException, BoxServerException;
 
     /**
+     * Replace the value of an existing key.
+     * 
+     * @param fileId
+     *            id of the file
+     * @param metadataType
+     *            type of metadata, right now only supports BoxFileMetadataManager.METADATA_TYPE_PROPERTIES.
+     * @param key
+     *            key of the metadata to be repaired.
+     * @param value
+     *            new value.
+     */
+    public BoxFileMetadata replaceMetadata(String fileId, String metadataType, String key, String newValue) throws BoxRestException, AuthFatalFailureException,
+        BoxServerException;
+
+    /**
      * Create or update metadata
      * 
      * @param fileId
@@ -65,6 +80,32 @@ public interface IBoxFileMetadataManager extends IBoxResourceManager {
      */
     public BoxFileMetadata updateMetadata(String fileId, String metadataType, String key, String value) throws BoxRestException, AuthFatalFailureException,
         BoxServerException;
+
+    /**
+     * update metadata
+     * 
+     * @param fileId
+     *            id of the file.
+     * @param metadataType
+     *            type of metadata, right now only supports BoxFileMetadataManager.METADATA_TYPE_PROPERTIES.
+     * @param keyValues
+     *            the key values to be updated
+     */
+    BoxFileMetadata updateMetadata(String fileId, String metadataType, Map<String, String> keyValues) throws BoxRestException, AuthFatalFailureException,
+        BoxServerException;
+
+    /**
+     * Create or update metadata. If metadata type doesn't exist, it will be created before updating the metadata.
+     * 
+     * @param fileId
+     *            id of the file.
+     * @param metadataType
+     *            type of metadata, right now only supports BoxFileMetadataManager.METADATA_TYPE_PROPERTIES.
+     * @param keyValues
+     *            the key values to be updated
+     */
+    BoxFileMetadata createOrUpdateMetadata(String fileId, String metadataType, Map<String, String> keyValues) throws BoxRestException,
+        AuthFatalFailureException, BoxServerException;
 
     /**
      * Delete the metadata with given key.
@@ -89,5 +130,4 @@ public interface IBoxFileMetadataManager extends IBoxResourceManager {
      */
     public BoxFileMetadata executeBatchMetadataRequest(String fileId, String metadataType, MetadataJSONPatchRequestObject requestObject)
         throws BoxRestException, AuthFatalFailureException, BoxServerException;
-
 }

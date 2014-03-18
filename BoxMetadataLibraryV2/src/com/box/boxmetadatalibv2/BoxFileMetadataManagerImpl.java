@@ -2,6 +2,8 @@ package com.box.boxmetadatalibv2;
 
 import java.util.Map;
 
+import org.apache.http.HttpStatus;
+
 import com.box.boxjavalibv2.IBoxConfig;
 import com.box.boxjavalibv2.dao.IBoxType;
 import com.box.boxjavalibv2.exceptions.AuthFatalFailureException;
@@ -62,10 +64,37 @@ public class BoxFileMetadataManagerImpl extends AbstractBoxResourceManager imple
     }
 
     @Override
+    public BoxFileMetadata createOrUpdateMetadata(String fileId, String metadataType, Map<String, String> keyValues) throws BoxRestException,
+        AuthFatalFailureException, BoxServerException {
+        try {
+            return createMetadata(fileId, metadataType, keyValues);
+        }
+        catch (BoxServerException e) {
+            int status = e.getStatusCode();
+            if (status == HttpStatus.SC_CONFLICT) {
+                return updateMetadata(fileId, metadataType, keyValues);
+            }
+            else {
+                throw e;
+            }
+        }
+    }
+
+    @Override
     public BoxFileMetadata createMetadata(String fileId, String metadataType, Map<String, String> keyValues) throws BoxRestException,
         AuthFatalFailureException, BoxServerException {
         CreateMetadataRequestObject obj = CreateMetadataRequestObject.createMetadataRequestObject(keyValues);
         return createMetadata(fileId, metadataType, obj);
+    }
+
+    @Override
+    public BoxFileMetadata updateMetadata(String fileId, String metadataType, Map<String, String> keyValues) throws BoxRestException,
+        AuthFatalFailureException, BoxServerException {
+        MetadataJSONPatchRequestObject obj = MetadataJSONPatchRequestObject.batchOperation();
+        for (Map.Entry<String, String> entry : keyValues.entrySet()) {
+            obj.put(entry.getKey(), entry.getValue());
+        }
+        return executeBatchMetadataRequest(fileId, metadataType, obj);
     }
 
     @Override
@@ -76,16 +105,19 @@ public class BoxFileMetadataManagerImpl extends AbstractBoxResourceManager imple
     }
 
     @Override
+    public BoxFileMetadata replaceMetadata(String fileId, String metadataType, String key, String value) throws BoxRestException, AuthFatalFailureException,
+        BoxServerException {
+        MetadataJSONPatchRequestObject obj = MetadataJSONPatchRequestObject.replaceOperation(key, value);
+        return executeBatchMetadataRequest(fileId, metadataType, obj);
+    }
+
+    @Override
     public BoxFileMetadata deleteMetadata(String fileId, String metadataType, String key) throws BoxRestException, AuthFatalFailureException,
         BoxServerException {
         MetadataJSONPatchRequestObject obj = MetadataJSONPatchRequestObject.removeOperation(key);
         return executeBatchMetadataRequest(fileId, metadataType, obj);
     }
 
-    /*
-     * (non-Javadoc)
-     * @see com.box.boxmetadatalibv2.IBoxFileMetadataManager#testMetadata(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
-     */
     @Override
     public BoxFileMetadata testMetadata(String fileId, String metadataType, String key, String value) throws BoxRestException, AuthFatalFailureException,
         BoxServerException {

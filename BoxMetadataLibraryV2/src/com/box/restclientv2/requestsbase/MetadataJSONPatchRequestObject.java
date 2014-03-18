@@ -62,8 +62,26 @@ public class MetadataJSONPatchRequestObject extends BoxDefaultRequestObject {
         return obj;
     }
 
+    /**
+     * Create a request object to replace metadata. You can also append more operations. e.g.MetadataJSONPatchRequestObject.replaceOperation("key",
+     * "newvalue").appendAddOperation("key2","value2");
+     */
+    public static MetadataJSONPatchRequestObject replaceOperation(String key, String value) {
+        MetadataJSONPatchRequestObject obj = new MetadataJSONPatchRequestObject();
+        obj.appendReplaceOperation(key, value);
+        return obj;
+    }
+
     ArrayList<MetadataOperation> getOperations() {
         return operations;
+    }
+
+    /**
+     * append a replace operation to existing metadata operation(s) e.g.
+     * MetadataJSONPatchRequestObject.testOperation("key","value").appendRemoveOperation("key", "newvalue");
+     */
+    public MetadataJSONPatchRequestObject appendReplaceOperation(String key, String value) {
+        return insertOperation(new MetadataOperation(Operation.REPLACE, key, value));
     }
 
     /**
