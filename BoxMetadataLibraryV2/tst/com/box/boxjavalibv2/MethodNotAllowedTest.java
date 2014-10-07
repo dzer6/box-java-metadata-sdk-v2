@@ -94,7 +94,7 @@ public class MethodNotAllowedTest {
         }
     }
 
-    protected String uploadFile(final BoxClient client, String folderId, String fileName) throws BoxRestException, BoxJSONException, FileNotFoundException, BoxServerException, AuthFatalFailureException, InterruptedException {
+    protected String uploadFile(final BoxClient client, final String folderId, final String fileName) throws BoxRestException, BoxJSONException, FileNotFoundException, BoxServerException, AuthFatalFailureException, InterruptedException {
         final BoxFileUploadRequestObject boxFileUploadRequestObject = BoxFileUploadRequestObject.uploadFileRequestObject(folderId, fileName, content(fileName));
         return client.getFilesManager().uploadFile(boxFileUploadRequestObject).getId();
     }
