@@ -1,0 +1,1 @@
+This tutorial is designed to provide a basic overview of how to use HttpClient. When you have completed the tutorial you will have written a simple application that downloads a page using HttpClient.
